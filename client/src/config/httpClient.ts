@@ -1,6 +1,6 @@
 const baseUrl = process.env.NODE_ENV === 'production'
   ? ''
-  : 'http://localhost:8080';
+  : 'http://localhost:4000';
 
 const get = async (path:string) => {
   const query = await fetch(`${baseUrl}${path}`);
@@ -9,7 +9,7 @@ const get = async (path:string) => {
 };
 
 const post = async (path:string, body:object) => {
-  const query = await fetch(`${baseUrl}${path}`, {
+  const response = await fetch(`${baseUrl}${path}`, {
     method: 'POST',
     body: JSON.stringify(body),
     mode: 'cors',
@@ -20,8 +20,7 @@ const post = async (path:string, body:object) => {
       Accept: 'application/json',
     },
   });
-  const json = await query.json();
-  return json;
+  return response;
 };
 
 const del = (path:string, body:object) => {

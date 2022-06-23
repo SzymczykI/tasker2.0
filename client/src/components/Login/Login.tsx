@@ -18,6 +18,7 @@ import { useState } from "react";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import auth from "../../config/config";
 import { useNavigate } from "react-router-dom";
+import { post } from "../../config/httpClient";
 
 interface LoginPropsComponentType {
   user: string;
@@ -41,38 +42,22 @@ const Login = ({
   const [isFetching, setIsFetching] = useState(false);
   const [hasError, setErrorState] = useState(false);
 
-  const host = "http://localhost:4000";
-
-  onAuthStateChanged(auth, (currentUser: any | null) => {
-    setUser(currentUser);
-  });
-
   const loginUser = async (e: any) => {
     e.preventDefault();
     setIsFetching(true);
+    onAuthStateChanged(auth, (currentUser: any | null) => {
+      setUser(currentUser);
+    });
+    console.log(user);
 
     const data = {
       email: values.email,
       password: values.password,
     };
 
-    const url = `${host}/auth/login`;
-
-    const response = await fetch(url, {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-      body: JSON.stringify(data),
-    });
-
+    const response = await post("/auth/login", data);
     const result = await response.json();
-    console.log(result);
+
     setIsFetching(false);
 
     if (response.status === 404) {
@@ -84,7 +69,7 @@ const Login = ({
     } catch (error) {
       setLoggedIn(false);
     }
-    if (result.message === "success") {
+    if (result.message === "success" && loggedIn === true) {
       navigate("/board");
     }
   };
@@ -181,7 +166,7 @@ const Login = ({
                 Sign In
               </Button>
               <Box m="5" textAlign="center">
-                <Link href="/auth/register" color="brand" p="2">
+                <Link href="/signup" color="brand" p="2">
                   Sign up for an account
                 </Link>
               </Box>
