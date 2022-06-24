@@ -45,11 +45,14 @@ const Login = ({
   const loginUser = async (e: any) => {
     e.preventDefault();
     setIsFetching(true);
-    onAuthStateChanged(auth, (currentUser: any | null) => {
-      setUser(currentUser);
-    });
-    console.log(user);
 
+    console.log(user);
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      setLoggedIn(true);
+    } catch (error) {
+      setLoggedIn(false);
+    }
     const data = {
       email: values.email,
       password: values.password,
@@ -63,13 +66,8 @@ const Login = ({
     if (response.status === 404) {
       setErrorState(true);
     }
-    try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      setLoggedIn(true);
-    } catch (error) {
-      setLoggedIn(false);
-    }
-    if (result.message === "success" && loggedIn === true) {
+    if (result.message === "success") {
+      setUser(result);
       navigate("/board");
     }
   };
@@ -103,7 +101,6 @@ const Login = ({
   return (
     <>
       <Box display="flex" justifyContent="center" alignItems="center" my="40px">
-        <Image height="40px" mt="2" src="/tasker.png" alt="brand logo"></Image>
         <Text fontWeight="bold" fontSize="28px" m="4px">
           Tasker
         </Text>

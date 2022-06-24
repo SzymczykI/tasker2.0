@@ -8,21 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-type TaskLabel {
-  bg   String
-  type String
-}
-
 model Task {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   list        List      @relation(fields: [listId], references: [id])
   listId      String    @db.ObjectId
-  dateCreated String
   description String
-  label       TaskLabel
-  sequence    Int
   title       String
   type        String
+  label        String
 }
 
 model List {

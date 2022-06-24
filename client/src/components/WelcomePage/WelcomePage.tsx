@@ -2,20 +2,7 @@ import React from "react";
 import { Box, Image, Flex, Text } from "@chakra-ui/react";
 import logo from "../../assets/tasker.png";
 
-interface WelcomePagePropsComponentType {
-  user: string;
-  setUser: React.Dispatch<React.SetStateAction<string>>;
-  loggedIn: boolean;
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const WelcomePage = ({
-  user,
-  setUser,
-  loggedIn,
-  setLoggedIn,
-}: WelcomePagePropsComponentType) => {
-
+const WelcomePage = () => {
   return (
     <>
       <Box bgGradient="linear(darkblue, white)" height="100vh">
@@ -28,7 +15,12 @@ const WelcomePage = ({
           <Box>
             <Image src={logo} alt="logo"></Image>
           </Box>
-          <Box>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          >
             <Text
               fontSize={["40px", "40px", "50px", "50px"]}
               fontWeight="bold"

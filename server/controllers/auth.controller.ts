@@ -29,7 +29,12 @@ export const register = async (req: Request, res: Response) => {
         username,
       },
     });
-    return res.status(201).json({ message: 'success' });
+    const newUser = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    return res.status(201).json({ message: 'success', user: newUser });
   } catch (error) {
     console.log(error)
     return res.status(424).json({ message: 'Failed to create user' });
@@ -53,7 +58,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Incorrect password' });
     }
 
-    return res.status(200).json({ message: 'success' });
+    return res.status(200).json({ message: 'success', user: user });
   } catch (error) {
     return res.status(424).json({ message: 'Login failed' });
   }

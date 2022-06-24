@@ -23,18 +23,16 @@ const post = async (path:string, body:object) => {
   return response;
 };
 
-const del = (path:string, body:object) => {
-  fetch(`${baseUrl}${path}`, {
+const del = (path:string) => {
+  const response = fetch(`${baseUrl}${path}`, {
     method: 'DELETE',
-    body: JSON.stringify(body),
     mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
   });
+  return response;
 };
 
 export {

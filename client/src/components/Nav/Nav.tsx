@@ -19,6 +19,12 @@ const Nav = ({
 }: NavPropsComponentType) => {
   const navigate = useNavigate();
 
+  const logoutHandler = () => {
+      setUser('');
+      setLoggedIn(false);
+      navigate("/");
+  }
+
   const navigateToLogin = () => {
     navigate("/login");
   };
@@ -37,6 +43,7 @@ const Nav = ({
           float="right"
           mr="2"
           pr="2"
+          onClick={logoutHandler}
         >
           <GrLogout />
         </Button>

@@ -5,7 +5,7 @@ import {
   FormControl,
   Input,
   Button,
-  Image,
+  Text,
   Link,
   useToast,
   Alert,
@@ -89,6 +89,7 @@ const SignUp = ({
 
     e.preventDefault();
     setIsCreatingStatus(true);
+
     onAuthStateChanged(auth, (currentUser: any | null) => {
       setUser(currentUser);
     });
@@ -104,9 +105,8 @@ const SignUp = ({
       username: username,
     };
 
-    const response = await post("/auth/login", data);
+    const response = await post("/auth/signup", data);
 
-    console.log(response);
     const result = await response.json();
     setIsCreatingStatus(false);
 
@@ -115,6 +115,7 @@ const SignUp = ({
     }
 
     if (result.message === "success") {
+        setUser(result)
       showToast();
 
       setTimeout(() => {
@@ -159,16 +160,10 @@ const SignUp = ({
 
   return (
     <>
-      <Box display="flex">
-        <Image
-          height="30px"
-          ml="auto"
-          mr="auto"
-          my="40px"
-          src="/tasker.png"
-          display="inline-block"
-          alt="brand logo"
-        />
+      <Box display="flex" justifyContent="center" alignItems="center">
+      <Text fontWeight="bold" fontSize="28px" m="4px">
+          Tasker
+        </Text>
       </Box>
       <Flex
         alignItems="center"
