@@ -54,7 +54,7 @@ const Nav = ({
       <>
         <Button
           fontSize="20"
-          color="brand"
+          color="buton"
           variant="link"
           float="right"
           mr="2"

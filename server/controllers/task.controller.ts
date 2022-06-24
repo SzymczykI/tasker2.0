@@ -61,11 +61,11 @@ export const allListTask = async (req: Request, res: Response) => {
 };
 
 export const deleteTask = async (req: Request, res: Response) => {
-  const listId = req.params;
-  const id = listId.id;
+  const taskId = req.params;
+  const id = taskId.id;
 
   try {
-    await prisma.list.delete({
+    await prisma.task.delete({
       where: {
         id: id,
       },

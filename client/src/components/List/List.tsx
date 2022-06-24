@@ -17,13 +17,13 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import "./List.css";
-import { IList } from "../../types/types";
+import React, { useState, useEffect } from "react";
+import { IList, ITasks } from "../../types/types";
 import { del, get, post } from "../../config/httpClient";
 import Form from "../Form/Form";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { FiMoreHorizontal } from "react-icons/fi";
+import Task from "../Task/Task";
 
 interface ListPropsComponentType {
   user: any;
@@ -33,7 +33,6 @@ interface ListPropsComponentType {
 }
 
 const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
-  const [task, setTask] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [taskValues, setTaskValues] = useState({
     title: "",
@@ -41,10 +40,19 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
     type: "",
     label: "",
   });
-  const [taskList, setTaskList] = useState([]);
+  const [taskList, setTaskList] = useState<ITasks[]>([]);
 
   const listId = list.id;
   const userId = user.user.id;
+
+  useEffect(() => {
+    const getLists = async () => {
+      const listTasks = await get(`/tasks/${listId}`);
+      const updatedList = listTasks.task.tasks;
+      setTaskList(updatedList);
+    };
+    getLists();
+  }, []);
 
   const addTaskHandler = async (e:any) => {
     e.preventDefault();
@@ -95,7 +103,7 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
       alignItems="center"
     >
       <Flex display="flex" flexDirection="row" justifyContent="center">
-        <Box position="relative" left="105">
+        <Box position="relative" left="150" top="-4">
           <Menu>
             <MenuButton aria-label="Options">
               <FiMoreHorizontal />
@@ -165,8 +173,30 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <Flex
+        flexDirection="column"
+        justifyContent="flex-start"
+      >
+        {taskList &&
+          taskList.map((task: ITasks, i: React.Key | null | undefined) => {
+            return (
+              <Box>
+                <Task
+                  key={i}
+                  task={task}
+                  taskList={taskList}
+                  setTaskList={setTaskList}
+
+                />
+              </Box>
+            );
+          })}
+      </Flex>
     </Box>
   );
 };
 
 export default List;
+
+
+

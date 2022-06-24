@@ -18,7 +18,7 @@ const theme = extendTheme({
     bug: "#eb5a46",
     feature: "#61bd4f",
     information: "#ff9f1a",
-    disabled: "#dddddd"
+    disabled: "#dddddd",
   },
 });
 

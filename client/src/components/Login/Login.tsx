@@ -46,7 +46,6 @@ const Login = ({
     e.preventDefault();
     setIsFetching(true);
 
-    console.log(user);
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
       setLoggedIn(true);

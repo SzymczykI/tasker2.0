@@ -1,10 +1,10 @@
 
 import { Router } from 'express';
-import { addTask, allListTask } from '../controllers/task.controller'
+import { addTask, allListTask, deleteTask } from '../controllers/task.controller'
 
 const router = Router();
 router.post('/', addTask);
 router.get('/:id', allListTask);
-// router.post('/list/:id', deleteList)
+router.delete('/task/:id', deleteTask)
 
 export default router;

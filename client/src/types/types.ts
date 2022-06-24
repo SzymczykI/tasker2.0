@@ -10,3 +10,11 @@ export interface ITask {
   type: string;
   label: string;
 }
+
+export interface ITasks {
+  id: string
+  title: string;
+  description: string;
+  type: string;
+  label: string;
+}
