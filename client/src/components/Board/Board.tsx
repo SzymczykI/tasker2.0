@@ -128,6 +128,7 @@ const Board = ({ user, loggedIn, setLoggedIn }: BoardPropsComponentType) => {
                   list={list}
                   listsU={listsU}
                   setListsU={setListsU}
+                  user={user}
                 />
               </Box>
             );

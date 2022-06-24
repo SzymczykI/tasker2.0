@@ -20,22 +20,53 @@ import {
 import React, { useState } from "react";
 import "./List.css";
 import { IList } from "../../types/types";
-import { del } from "../../config/httpClient";
+import { del, get, post } from "../../config/httpClient";
 import Form from "../Form/Form";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { FiMoreHorizontal } from "react-icons/fi";
 
 interface ListPropsComponentType {
+  user: any;
   list: IList;
   listsU: IList[];
   setListsU: React.Dispatch<React.SetStateAction<IList[]>>;
 }
 
-const List = ({ list, listsU, setListsU }: ListPropsComponentType) => {
+const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
   const [task, setTask] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const addTaskHandler = () => {
-    setTask("done");
+  const [taskValues, setTaskValues] = useState({
+    title: "",
+    description: "",
+    type: "",
+    label: "",
+  });
+  const [taskList, setTaskList] = useState([]);
+
+  const listId = list.id;
+  const userId = user.user.id;
+
+  const addTaskHandler = async (e:any) => {
+    e.preventDefault();
+
+    const data = {
+      userId: userId,
+      listId: listId,
+      title: taskValues.title,
+      description: taskValues.description,
+      type: taskValues.type,
+      label: taskValues.label,
+    };
+
+    const response = await post("/tasks", data);
+    const result = await response.json();
+
+    if (result.message === "success") {
+      const listTasks = await get(`/tasks/${listId}`);
+      const updatedList = listTasks.task.tasks;
+      setTaskList(updatedList);
+    }
+    onClose();
   };
 
   const deleteListHandler = async (e: any) => {
@@ -122,13 +153,13 @@ const List = ({ list, listsU, setListsU }: ListPropsComponentType) => {
           <ModalHeader>Add new task</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Form />
+            <Form list={list} taskValues={taskValues} setTaskValues={setTaskValues} />
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" colorScheme="blue" mr={3} onClick={onClose}>
               Back
             </Button>
-            <Button colorScheme="blue" mr={3}>
+            <Button colorScheme="blue" mr={3} onClick={addTaskHandler}>
               Save
             </Button>
           </ModalFooter>
