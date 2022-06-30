@@ -1,6 +1,5 @@
 import { Box, Input, Select } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { post } from "../../config/httpClient";
 import { IList, ITask } from "../../types/types";
 
 interface FormPropsComponentType {

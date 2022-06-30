@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import userRoutes from './server/routes/authRoutes';
-import listRoutes from './server/routes/listRoutes';
-import taskRoutes from './server/routes/taskRoutes';
+import userRoutes from './routes/authRoutes';
+import listRoutes from './routes/listRoutes';
+import taskRoutes from './routes/taskRoutes';
 
 const app = express();
 const port = 4000;
