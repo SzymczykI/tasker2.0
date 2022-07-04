@@ -26,6 +26,28 @@ export const addList = async (req: Request, res: Response) => {
   }
 };
 
+export const updateList = async (req: Request, res: Response) => {
+  const listId = req.params.id;
+  const newTitle = req.body.title;
+
+  try {
+    const list = await prisma.list.update({
+      where: {
+          id: listId
+      },
+      data: {
+				title: newTitle
+			}
+    });
+
+    return res.status(201).json({ message: 'success', list: list });
+  } catch (error) {
+    console.log(error)
+    return res.status(424).json({ message: 'Failed to update list' });
+  }
+
+}
+
 export const allUserLists = async (req: Request, res: Response) => {
     const userId = req.params;
     const id = userId.id

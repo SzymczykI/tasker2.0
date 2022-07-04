@@ -35,8 +35,22 @@ const del = (path:string) => {
   return response;
 };
 
+const put = (path:string, body: object) => {
+  const response = fetch(`${baseUrl}${path}`, {
+    method: 'PUT',
+    mode: 'cors',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  });
+  return response;
+};
+
 export {
   get,
   post,
   del,
+  put
 };

@@ -62,7 +62,7 @@ const Board = ({ user, loggedIn, setLoggedIn }: BoardPropsComponentType) => {
   };
 
   return (
-    <>
+    <Box>
       <Box>
         <Box
           rounded="lg"
@@ -134,7 +134,7 @@ const Board = ({ user, loggedIn, setLoggedIn }: BoardPropsComponentType) => {
             );
           })}
       </Flex>
-    </>
+    </Box>
   );
 };
 
