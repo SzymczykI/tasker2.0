@@ -41,7 +41,6 @@ export const addTask = async (req: Request, res: Response) => {
 export const allListTask = async (req: Request, res: Response) => {
   const listId = req.params;
   const id = listId.id;
-  console.log(id)
 
   try {
     const task = await prisma.list.findUnique({
@@ -57,6 +56,33 @@ export const allListTask = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     return res.status(424).json({ message: "Failed to fetch tasks" });
+  }
+};
+
+export const updateTask = async (req: Request, res: Response) => {
+  const taskId = req.params.id;
+  const newTitle = req.body.title;
+  const newDescription = req.body.description;
+  const newType = req.body.type;
+  const newLabel = req.body.label;
+
+  try {
+    const task = await prisma.task.update({
+      where: {
+        id: taskId,
+      },
+      data: {
+        title: newTitle,
+        description: newDescription,
+        type: newType,
+        label: newLabel,
+      },
+    });
+
+    return res.status(201).json({ message: "success", task: task });
+  } catch (error) {
+    console.log(error);
+    return res.status(424).json({ message: "Failed to update task" });
   }
 };
 

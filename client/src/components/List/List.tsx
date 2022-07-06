@@ -255,6 +255,7 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
                   task={task}
                   taskList={taskList}
                   setTaskList={setTaskList}
+                  list={list}
                 />
               </Box>
             );

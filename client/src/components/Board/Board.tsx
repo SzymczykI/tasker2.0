@@ -26,7 +26,7 @@ const Board = ({ user, loggedIn, setLoggedIn }: BoardPropsComponentType) => {
   const userId = user.user.id;
 
   const addListHandler = () => {
-    setAddNameOpen(true);
+    setAddNameOpen(!addNameOpen);
   };
 
   useEffect(() => {
