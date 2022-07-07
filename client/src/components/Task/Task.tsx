@@ -95,16 +95,17 @@ const Task = ({
       borderRadius="3px"
       bg="white"
       boxShadow="rgb(0 0 0 / 10%) 0 0 10px"
-      m="2"
+      my="0.5rem"
       display="flex"
       flexDirection="column"
       justifyContent="center"
+      textAlign="left"
     >
       <Flex justifyContent="flex-start" flexDirection="column">
         <Text fontSize="1rem">{task.title}</Text>
         <Text fontSize="0.8rem">{task.description}</Text>
       </Flex>
-      <Box position="relative" left="105" top="-16">
+      <Box position="relative" left="200" top="-16">
         <Menu>
           <MenuButton aria-label="Options">
             <FiMoreHorizontal />

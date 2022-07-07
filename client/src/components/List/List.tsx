@@ -58,7 +58,7 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
       setTaskList(updatedList);
     };
     getLists();
-  }, []);
+  }, [listsU]);
 
   const addTaskHandler = async (e: any) => {
     e.preventDefault();
@@ -79,6 +79,12 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
       const listTasks = await get(`/tasks/${listId}`);
       const updatedList = listTasks.task.tasks;
       setTaskList(updatedList);
+      setTaskValues({
+        title: "",
+        description: "",
+        type: "",
+        label: "",
+      });
     }
     onClose();
   };
@@ -90,13 +96,10 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
     const result = await response.json();
 
     if (result.message === "Deleted successfully") {
-      const updatedL = listsU.filter((i) => i.id !== id);
-      setListsU(updatedL);
+      const userLists = await get(`/lists/${userId}`);
+      const updatedLists = userLists.list[0].lists;
+      setListsU(updatedLists);
     }
-  };
-
-  const openUpdateHandler = () => {
-    setChangeTitleOpen(!changeTitleOpen);
   };
 
   const updateListHandler = async (e: any) => {
@@ -114,7 +117,7 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
       const userLists = await get(`/lists/${userId}`);
       const updatedLists = userLists.list[0].lists;
       setListsU(updatedLists);
-      setListTitle('');
+      setListTitle("");
     }
   };
 
@@ -126,37 +129,35 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
   return (
     <Box
       w="250px"
-      p="20px 20px"
       borderRadius="3px"
-      bg="white"
+      bg="#d8e8f2"
       boxShadow="rgb(0 0 0 / 10%) 0 0 10px"
       m="3"
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      alignItems="center"
+      // alignItems="center"
     >
-      <Flex display="flex" flexDirection="row" justifyContent="space-around">
+      <Flex flexDirection="row" justifyContent="space-between">
         <Box
-          textAlign="left"
-          color="#5E6C84"
+          color="#134d70"
           mt="2"
           mb="2"
-          fontSize={["10px", "10px", "15px", "15px"]}
+          pl="2rem"
+          pt="2rem"
+          fontSize="20px"
           fontWeight="semibold"
           lineHeight="normal"
         >
-          <Text fontWeight="bold" fontSize="20px">
-            {list.title}
-          </Text>
+          <Text>{list.title}</Text>
         </Box>
-        <Box>
+        <Box p="1rem">
           <Menu>
             <MenuButton aria-label="Options">
               <FiMoreHorizontal />
             </MenuButton>
             <MenuList justifyContent="center" alignItems="center">
-              <MenuItem onClick={openUpdateHandler}>
+              <MenuItem onClick={() => setChangeTitleOpen(!changeTitleOpen)}>
                 <AiOutlineEdit />
                 <Text marginLeft="5px">Edit</Text>
               </MenuItem>
@@ -173,15 +174,16 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
         <Box
           rounded="lg"
           height="auto"
-          width="272px"
+          width="230px"
           display="flex"
           flexDirection="column"
           mt="10px"
-          mx="10px"
+          ml="1rem"
+          // mx="10px"
         >
           <InputGroup size="md">
             <Input
-              ml="1rem"
+              // ml="1rem"
               mr="1rem"
               type="text"
               name="title"
@@ -193,36 +195,23 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
               autoFocus
             />
             <InputRightElement width="4.5rem">
-              <Button mr="1.2rem" h="1.75rem" size="sm" onClick={updateListHandler}>
+              <Button
+                mr="1.2rem"
+                h="1.75rem"
+                size="sm"
+                onClick={updateListHandler}
+              >
                 Update
               </Button>
-              <X onClick={() => setChangeTitleOpen(!changeTitleOpen)} className="closeIcon" />
+              <X
+                onClick={() => setChangeTitleOpen(!changeTitleOpen)}
+                className="closeIcon"
+              />
             </InputRightElement>
           </InputGroup>
         </Box>
       ) : null}
-      <Box
-        rounded="lg"
-        height="auto"
-        width="250px"
-        display="flex"
-        flexDirection="column"
-        mt="10px"
-        mx="1px"
-      >
-        <Button
-          onClick={onOpen}
-          my="1px"
-          mx="1px"
-          backgroundColor="rgb(223 227 230 / 55%)"
-          borderRadius="10"
-          boxShadow="1px 1px 0 1px rgba(0, 0, 0, 0.12)"
-          color="black"
-          loadingText="Adding task"
-        >
-          + Add a task
-        </Button>
-      </Box>
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -245,11 +234,11 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Flex flexDirection="column" justifyContent="flex-start">
-        {taskList &&
-          taskList.map((task: ITasks, i: React.Key | null | undefined) => {
-            return (
-              <Box>
+      <Flex flexDirection="column" justifyContent="center">
+        <Box m="5px">
+          {taskList &&
+            taskList.map((task: ITasks, i: React.Key | null | undefined) => {
+              return (
                 <Task
                   key={i}
                   task={task}
@@ -257,10 +246,30 @@ const List = ({ list, listsU, setListsU, user }: ListPropsComponentType) => {
                   setTaskList={setTaskList}
                   list={list}
                 />
-              </Box>
-            );
-          })}
+              );
+            })}
+        </Box>
       </Flex>
+      <Box
+        rounded="lg"
+        height="auto"
+        width="240px"
+        display="flex"
+        flexDirection="column"
+        my="0.5rem"
+        mx="2px"
+      >
+        <Button
+          onClick={onOpen}
+          backgroundColor="rgb(223 227 230 / 55%)"
+          borderRadius="10"
+          boxShadow="1px 1px 0 1px rgba(0, 0, 0, 0.12)"
+          color="black"
+          loadingText="Adding task"
+        >
+          + Add task
+        </Button>
+      </Box>
     </Box>
   );
 };
